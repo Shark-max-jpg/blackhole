@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S I N G U L A R I T Y — 黑洞观测站</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Serif:ital@0;1&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --void: #000000;
+  --deep: #050208;
+  --ember: #ff6a00;
+  --blaze: #ff9500;
+  --gold: #ffc857;
+  --white-hot: #fff4e0;
+  --cool: #4a7fff;
+  --text: #e8dcc8;
+  --text-dim: #7a7060;
+}
+
+html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--ember) var(--void); }
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* Custom Cursor */
+.cursor {
+  position: fixed;
+  width: 20px; height: 20px;
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transition: transform 0.15s ease, opacity 0.3s;
+  mix-blend-mode: difference;
+}
+.cursor-dot {
+  position: fixed;
+  width: 4px; height: 4px;
+  background: var(--white-hot);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10001;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--void); }
+::-webkit-scrollbar-thumb { background: var(--ember); border-radius: 2px; }
+
+/* ═══════════ HERO SECTION ═══════════ */
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.starfield {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Black Hole Container */
+.blackhole-stage {
+  position: relative;
+  width: 500px; height: 500px;
+  z-index: 2;
+  animation: float 8s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.02); }
+}
+
+/* Event Horizon */
+.event-horizon {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 200px; height: 200px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, #000 60%, transparent 70%);
+  border-radius: 50%;
+  z-index: 5;
+  box-shadow:
+    0 0 80px 30px rgba(0,0,0,0.9),
+    inset 0 0 60px 20px rgba(0,0,0,1);
+}
+
+/* Photon Ring */
+.photon-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 220px; height: 220px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid transparent;
+  z-index: 4;
+  animation: ringPulse 4s ease-in-out infinite;
+}
+@keyframes ringPulse {
+  0%, 100% { box-shadow: 0 0 15px 5px rgba(255,140,0,0.6), 0 0 40px 10px rgba(255,100,0,0.3), inset 0 0 15px 5px rgba(255,140,0,0.4); }
+  50% { box-shadow: 0 0 25px 8px rgba(255,160,0,0.8), 0 0 60px 15px rgba(255,120,0,0.5), inset 0 0 25px 8px rgba(255,160,0,0.6); }
+}
+
+/* Accretion Disk */
+.accretion-disk {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 460px; height: 120px;
+  transform: translate(-50%, -50%) rotateX(75deg);
+  border-radius: 50%;
+  z-index: 3;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    rgba(255,100,0,0.1) 30deg,
+    rgba(255,160,0,0.6) 60deg,
+    rgba(255,200,80,0.9) 90deg,
+    rgba(255,240,180,1) 120deg,
+    rgba(255,200,80,0.9) 150deg,
+    rgba(255,160,0,0.6) 180deg,
+    rgba(255,100,0,0.1) 210deg,
+    transparent 240deg,
+    rgba(255,100,0,0.1) 270deg,
+    rgba(255,160,0,0.6) 300deg,
+    rgba(255,200,80,0.9) 330deg,
+    rgba(255,240,180,1) 350deg,
+    rgba(255,200,80,0.9) 360deg
+  );
+  animation: spinDisk 12s linear infinite;
+  filter: blur(3px);
+}
+@keyframes spinDisk { to { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(360deg); } }
+
+/* Inner glow layers */
+.accretion-inner {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 340px; height: 90px;
+  transform: translate(-50%, -50%) rotateX(75deg);
+  border-radius: 50%;
+  z-index: 4;
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    transparent 0deg,
+    rgba(255,200,80,0.3) 40deg,
+    rgba(255,240,180,0.8) 80deg,
+    rgba(255,255,240,1) 100deg,
+    rgba(255,240,180,0.8) 140deg,
+    rgba(255,200,80,0.3) 180deg,
+    transparent 220deg,
+    rgba(255,200,80,0.3) 260deg,
+    rgba(255,240,180,0.8) 300deg,
+    rgba(255,255,240,1) 320deg,
+    rgba(255,240,180,0.8) 360deg
+  );
+  animation: spinDisk 6s linear infinite reverse;
+  filter: blur(2px);
+}
+
+/* Gravitational Lensing Arc */
+.lensing {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 300px; height: 300px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 6;
+  border: 1px solid rgba(255,180,80,0.15);
+  box-shadow: 0 0 100px 40px rgba(255,140,0,0.08);
+  animation: lensPulse 6s ease-in-out infinite;
+}
+@keyframes lensPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+  50% { transform: translate(-50%, -50%) scale(1.08); opacity: 1; }
+}
+
+/* Jet Particles */
+.jet-particles {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 4px; height: 400px;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  overflow: visible;
+}
+.jet-particles::before,
+.jet-particles::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 200px;
+  background: linear-gradient(to top, rgba(74,127,255,0.8), transparent);
+  filter: blur(4px);
+  animation: jetFlow 2s ease-in-out infinite;
+}
+.jet-particles::after {
+  top: auto;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(74,127,255,0.8), transparent);
+  animation-delay: 1s;
+}
+@keyframes jetFlow {
+  0% { opacity: 0.3; height: 150px; }
+  50% { opacity: 0.8; height: 220px; }
+  100% { opacity: 0.3; height: 150px; }
+}
+
+/* Hero Title */
+.hero-title {
+  position: absolute;
+  z-index: 10;
+  text-align: center;
+  pointer-events: none;
+}
+.hero-title h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(3rem, 8vw, 8rem);
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  color: transparent;
+  background: linear-gradient(180deg, var(--white-hot) 0%, var(--gold) 40%, var(--ember) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 40px rgba(255,140,0,0.4));
+  line-height: 1;
+}
+.hero-title p {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: clamp(0.9rem, 1.5vw, 1.3rem);
+  color: var(--text-dim);
+  margin-top: 1rem;
+  letter-spacing: 0.15em;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  animation: fadeInUp 2s ease 2s both;
+}
+.scroll-hint span {
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.scroll-line {
+  width: 1px; height: 50px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ═══════════ SECTIONS COMMON ═══════════ */
+section {
+  position: relative;
+  padding: 8rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.section-label::before {
+  content: '';
+  width: 40px; height: 1px;
+  background: var(--ember);
+}
+
+.section-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 2rem;
+  color: var(--white-hot);
+}
+
+.section-body {
+  font-size: 1rem;
+  line-height: 1.9;
+  color: var(--text-dim);
+  max-width: 600px;
+}
+
+/* Reveal Animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════ TYPES SECTION ═══════════ */
+.types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 4rem;
+}
+
+.type-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255,100,0,0.05), rgba(0,0,0,0.8));
+  border: 1px solid rgba(255,140,0,0.1);
+  border-radius: 2px;
+  padding: 2.5rem 2rem;
+  transition: all 0.5s ease;
+  overflow: hidden;
+}
+.type-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ember), transparent);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.type-card:hover {
+  border-color: rgba(255,140,0,0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(255,100,0,0.08);
+}
+.type-card:hover::before { opacity: 1; }
+
+.type-icon {
+  width: 60px; height: 60px;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+.type-icon svg { width: 100%; height: 100%; }
+
+.type-card h3 {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.type-card .mass {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+  font-family: monospace;
+}
+.type-card p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+/* ═══════════ TIMELINE SECTION ═══════════ */
+.timeline {
+  position: relative;
+  margin-top: 4rem;
+  padding-left: 3rem;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--ember), var(--cool), var(--ember), transparent);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 4rem;
+  padding-left: 2rem;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  top: 0.5rem; left: -3.35rem;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--ember);
+  box-shadow: 0 0 15px var(--ember);
+}
+.timeline-year {
+  font-family: 'Anton', sans-serif;
+  font-size: 2.5rem;
+  color: var(--ember);
+  opacity: 0.6;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+.timeline-item h3 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.4rem;
+  color: var(--white-hot);
+  margin-bottom: 0.5rem;
+}
+.timeline-item p {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--text-dim);
+  max-width: 500px;
+}
+
+/* ═══════════ DATA VISUALIZATION ═══════════ */
+.data-section {
+  text-align: center;
+  padding: 10rem 2rem;
+}
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4rem;
+  margin-top: 4rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.data-point {
+  text-align: center;
+}
+.data-value {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  background: linear-gradient(135deg, var(--gold), var(--ember));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1.1;
+}
+.data-unit {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-top: 0.5rem;
+  letter-spacing: 0.1em;
+}
+
+/* ═══════════ EQUATION SECTION ═══════════ */
+.equation-section {
+  text-align: center;
+  padding: 8rem 2rem;
+  position: relative;
+}
+.equation-display {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-style: italic;
+  color: var(--white-hot);
+  margin: 3rem 0;
+  letter-spacing: 0.1em;
+  opacity: 0.9;
+}
+.equation-display span {
+  color: var(--gold);
+}
+
+/* ═══════════ GALLERY SECTION ═══════════ */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 4rem;
+}
+.gallery-item {
+  position: relative;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  border-radius: 2px;
+  border: 1px solid rgba(255,140,0,0.08);
+}
+.gallery-item canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.gallery-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 1.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+.gallery-caption strong {
+  display: block;
+  color: var(--gold);
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.3rem;
+  font-size: 0.95rem;
+}
+
+/* ═══════════ FOOTER ═══════════ */
+footer {
+  text-align: center;
+  padding: 6rem 2rem 3rem;
+  border-top: 1px solid rgba(255,140,0,0.08);
+}
+footer p {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.2em;
+}
+
+/* Noise overlay */
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px;
+}
+
+/* Ambient glow behind hero */
+.ambient-glow {
+  position: absolute;
+  top: 30%; left: 50%;
+  width: 600px; height: 600px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255,100,0,0.08) 0%, transparent 70%);
+  z-index: 1;
+  animation: ambientPulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes ambientPulse {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+}
+
+/* Divider */
+.divider {
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ember), transparent);
+  margin: 0 auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .blackhole-stage { width: 320px; height: 320px; }
+  .event-horizon { width: 130px; height: 130px; }
+  .photon-ring { width: 150px; height: 150px; }
+  .accretion-disk { width: 300px; height: 80px; }
+  .accretion-inner { width: 220px; height: 60px; }
+  .lensing { width: 200px; height: 200px; }
+  .data-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .gallery-grid { grid-template-columns: 1fr; }
+  .types-grid { grid-template-columns: 1fr; }
+  .cursor, .cursor-dot { display: none; }
+  body { cursor: auto; }
+}
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <canvas class="starfield" id="starfield"></canvas>
+  <div class="ambient-glow"></div>
+
+  <div class="blackhole-stage">
+    <div class="jet-particles"></div>
+    <div class="accretion-disk"></div>
+    <div class="accretion-inner"></div>
+    <div class="photon-ring"></div>
+    <div class="event-horizon"></div>
+    <div class="lensing"></div>
+  </div>
+
+  <div class="hero-title">
+    <h1>SINGULARITY</h1>
+    <p>奇 点 之 外 ， 万 物 消 失</p>
+  </div>
+
+  <div class="scroll-hint">
+    <span>向下探索</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════ WHAT IS A BLACK HOLE ═══════════ -->
+<section>
+  <div class="reveal">
+    <div class="section-label">Chapter I</div>
+    <h2 class="section-title">什么是黑洞？</h2>
+    <p class="section-body">
+      黑洞是时空曲率大到光都无法逃逸的区域。1915年，爱因斯坦的广义相对论首次预言了它们的存在——当足够大的质量被压缩到极小的空间内，时空结构本身会发生坍塌，形成一个连光都走不出的深渊。
+    </p>
+    <br>
+    <p class="section-body">
+      它的边界被称为<strong style="color:var(--gold)">事件视界</strong>（Event Horizon）——一旦跨越这条线，任何信息都无法返回。而在中心，是一个密度无限大、体积无限小的<strong style="color:var(--gold)">奇点</strong>。在那里，我们已知的物理定律全部失效。
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════ TYPES ═══════════ -->
+<section>
+  <div class="reveal">
+    <div class="section-label">Chapter II</div>
+    <h2 class="section-title">黑洞的家族</h2>
+    <p class="section-body">根据质量，黑洞被分为四个等级，从恒星残骸到宇宙巨兽。</p>
+  </div>
+
+  <div class="types-grid">
+    <div class="type-card reveal">
+      <div class="type-icon">
+        <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1">
+          <circle cx="30" cy="30" r="8" fill="rgba(255,140,0,0.3)" stroke="var(--gold)"/>
+          <circle cx="30" cy="30" r="16" stroke="rgba(255,140,0,0.2)" stroke-dasharray="3 3"/>
+          <circle cx="30" cy="30" r="24" stroke="rgba(255,140,0,0.1)" stroke-dasharray="2 4"/>
+        </svg>
+      </div>
+      <h3>恒星级黑洞</h3>
+      <div class="mass">5 – 100 M☉</div>
+      <p>大质量恒星在生命尽头发生超新星爆发后坍缩形成。银河系中估计存在上亿个这样的黑洞，静静潜伏在恒星之间。</p>
+    </div>
+
+    <div class="type-card reveal">
+      <div class="type-icon">
+        <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1">
+          <circle cx="30" cy="30" r="12" fill="rgba(255,140,0,0.3)" stroke="var(--gold)"/>
+          <circle cx="30" cy="30" r="22" stroke="rgba(255,140,0,0.2)" stroke-dasharray="3 3"/>
+          <circle cx="30" cy="30" r="28" stroke="rgba(255,140,0,0.1)" stroke-dasharray="2 4"/>
+        </svg>
+      </div>
+      <h3>中等质量黑洞</h3>
+      <div class="mass">100 – 100,000 M☉</div>
+      <p>黑洞世界的"失踪环节"。近年通过引力波和X射线双星系统逐步确认其存在，形成机制仍是未解之谜。</p>
+    </div>
+
+    <div class="type-card reveal">
+      <div class="type-icon">
+        <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1">
+          <circle cx="30" cy="30" r="16" fill="rgba(255,140,0,0.3)" stroke="var(--gold)"/>
+          <circle cx="30" cy="30" r="26" stroke="rgba(255,140,0,0.2)" stroke-dasharray="3 3"/>
+          <circle cx="30" cy="30" r="30" stroke="rgba(255,140,0,0.1)" stroke-dasharray="2 4"/>
+        </svg>
+      </div>
+      <h3>超大质量黑洞</h3>
+      <div class="mass">10⁵ – 10¹⁰ M☉</div>
+      <p>盘踞在绝大多数星系中心的宇宙巨兽。银河系中心的 Sagittarius A* 质量为太阳的 400 万倍，而 IC 1105 中心的黑洞可达太阳的 400 亿倍。</p>
+    </div>
+
+    <div class="type-card reveal">
+      <div class="type-icon">
+        <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1">
+          <circle cx="30" cy="30" r="3" fill="var(--gold)" stroke="var(--gold)"/>
+          <circle cx="30" cy="30" r="30" stroke="rgba(255,140,0,0.15)" stroke-dasharray="1 5"/>
+        </svg>
+      </div>
+      <h3>原始黑洞</h3>
+      <div class="mass">&lt; 1 M☉ (假设)</div>
+      <p>理论预言的黑洞，可能诞生于宇宙大爆炸初期的极高密度区域。如果存在，或许是暗物质的候选者之一。</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════ DATA POINTS ═══════════ -->
+<section class="data-section">
+  <div class="reveal">
+    <div class="section-label" style="justify-content:center;">Chapter III · 数据</div>
+    <h2 class="section-title">数字背后的深渊</h2>
+  </div>
+  <div class="data-grid reveal">
+    <div class="data-point">
+      <div class="data-value" data-target="4295000" data-suffix="">0</div>
+      <div class="data-unit">Sagittarius A* 太阳质量</div>
+    </div>
+    <div class="data-point">
+      <div class="data-value" data-target="177" data-suffix=" 亿光年">0</div>
+      <div class="data-unit">TON 618 距离地球</div>
+    </div>
+    <div class="data-point">
+      <div class="data-value" data-target="299792" data-suffix=" km/s">0</div>
+      <div class="data-unit">光速 — 黑洞的逃逸门槛</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════ TIMELINE ═══════════ -->
+<section>
+  <div class="reveal">
+    <div class="section-label">Chapter IV</div>
+    <h2 class="section-title">人类探索黑洞的时间线</h2>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-year">1915</div>
+      <h3>广义相对论</h3>
+      <p>爱因斯坦发表广义相对论，为黑洞的理论奠定基础。史瓦西在同年求出爱因斯坦场方程的第一个精确解——史瓦西半径。</p>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-year">1967</div>
+      <h3>"Black Hole"一词诞生</h3>
+      <p>天文学家约翰·惠勒在会议上正式提出"黑洞"（Black Hole）这一术语，取代了此前"完全坍缩星"等拗口的称呼。</p>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-year">1971</div>
+      <h3>首个恒星级黑洞发现</h3>
+      <p>天鹅座 X-1 被确认为黑洞候选体，这是人类发现的第一个恒星级黑洞，质量约为太阳的 21 倍。</p>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2019</div>
+      <h3>人类首张黑洞照片</h3>
+      <p>事件视界望远镜（EHT）发布了 M87* 黑洞的影像——那个标志性的橙色光环，是人类第一次"看到"黑洞。</p>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2022</div>
+      <h3>银河系中心黑洞成像</h3>
+      <p>EHT 团队发布 Sagittarius A* 的首张照片。一个离我们仅 27000 光年的宇宙巨兽，终于揭开了面纱。</p>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-year">∞</div>
+      <h3>尚未书写</h3>
+      <p>黑洞仍然是物理学最前沿的未解之地。信息悖论、火墙假说、量子引力……每一个问题都可能颠覆我们对宇宙的认知。</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════ EQUATION ═══════════ -->
+<section class="equation-section">
+  <div class="reveal">
+    <div class="section-label" style="justify-content:center;">Chapter V</div>
+    <h2 class="section-title">史瓦西半径</h2>
+    <p class="section-body" style="margin: 0 auto;">任何质量都有一个对应的史瓦西半径。当一个天体的实际半径小于这个值时，它就会坍缩成黑洞。</p>
+    <div class="equation-display">
+      <span>r</span><sub>s</sub> = <span>2GM</span> / <span>c²</span>
+    </div>
+    <p class="section-body" style="margin: 0 auto; font-size: 0.85rem; color: var(--text-dim);">
+      G 为引力常数 · M 为天体质量 · c 为光速<br>
+      如果把地球压缩成一个黑洞，它的半径只有 <strong style="color:var(--gold)">约 9 毫米</strong>
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════ VISUALIZATIONS ═══════════ -->
+<section>
+  <div class="reveal">
+    <div class="section-label">Chapter VI</div>
+    <h2 class="section-title">可视化</h2>
+    <p class="section-body">程序生成的黑洞模拟景观——每一帧都是独立的实时渲染。</p>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="gallery-item reveal">
+      <canvas id="viz1"></canvas>
+      <div class="gallery-caption">
+        <strong>Accretion Simulation</strong>
+        吸积盘湍流模拟 · 实时粒子渲染
+      </div>
+    </div>
+    <div class="gallery-item reveal">
+      <canvas id="viz2"></canvas>
+      <div class="gallery-caption">
+        <strong>Gravitational Lensing</strong>
+        引力透镜效应 · 光线弯曲可视化
+      </div>
+    </div>
+    <div class="gallery-item reveal">
+      <canvas id="viz3"></canvas>
+      <div class="gallery-caption">
+        <strong>Spaghettification</strong>
+        面条化效应 · 潮汐力拉伸模拟
+      </div>
+    </div>
+    <div class="gallery-item reveal">
+      <canvas id="viz4"></canvas>
+      <div class="gallery-caption">
+        <strong>Hawking Radiation</strong>
+        霍金辐射 · 量子真空涨落
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <p>— S I N G U L A R I T Y · 黑 洞 观 测 站 —</p>
+  <br>
+  <p style="opacity: 0.4;">在奇点之内，时间失去意义，空间终结于无声</p>
+</footer>
+
+<script>
+// ═══════════ CUSTOM CURSOR ═══════════
+const cursor = document.getElementById('cursor');
+const cursorDot = document.getElementById('cursorDot');
+let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  cursorDot.style.left = mouseX - 2 + 'px';
+  cursorDot.style.top = mouseY - 2 + 'px';
+});
+
+function animateCursor() {
+  curX += (mouseX - curX) * 0.12;
+  curY += (mouseY - curY) * 0.12;
+  cursor.style.left = curX - 10 + 'px';
+  cursor.style.top = curY - 10 + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// ═══════════ STARFIELD ═══════════
+const starCanvas = document.getElementById('starfield');
+const starCtx = starCanvas.getContext('2d');
+
+function resizeStarfield() {
+  starCanvas.width = window.innerWidth;
+  starCanvas.height = window.innerHeight;
+}
+resizeStarfield();
+window.addEventListener('resize', resizeStarfield);
+
+class Star {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * starCanvas.width;
+    this.y = Math.random() * starCanvas.height;
+    this.size = Math.random() * 1.5 + 0.3;
+    this.opacity = Math.random() * 0.8 + 0.2;
+    this.speed = Math.random() * 0.15 + 0.02;
+    this.twinkleSpeed = Math.random() * 0.02 + 0.005;
+    this.twinkleOffset = Math.random() * Math.PI * 2;
+    // slight color variation
+    const r = Math.random();
+    if (r < 0.1) this.color = [255, 200, 150]; // warm
+    else if (r < 0.15) this.color = [150, 180, 255]; // cool
+    else this.color = [255, 255, 255];
+  }
+  draw(time) {
+    const twinkle = Math.sin(time * this.twinkleSpeed + this.twinkleOffset) * 0.3 + 0.7;
+    const alpha = this.opacity * twinkle;
+    starCtx.beginPath();
+    starCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    starCtx.fillStyle = `rgba(${this.color[0]},${this.color[1]},${this.color[2]},${alpha})`;
+    starCtx.fill();
+  }
+}
+
+const stars = Array.from({ length: 300 }, () => new Star());
+
+function drawStarfield(time) {
+  starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+  stars.forEach(s => { s.draw(time); });
+  requestAnimationFrame(drawStarfield);
+}
+requestAnimationFrame(drawStarfield);
+
+// ═══════════ SCROLL REVEAL ═══════════
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// ═══════════ COUNTER ANIMATION ═══════════
+const dataValues = document.querySelectorAll('.data-value[data-target]');
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !entry.target.dataset.animated) {
+      entry.target.dataset.animated = 'true';
+      const target = parseInt(entry.target.dataset.target);
+      const suffix = entry.target.dataset.suffix || '';
+      let start = 0;
+      const duration = 2000;
+      const startTime = performance.now();
+      function updateCounter(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // easeOutExpo
+        const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const current = Math.floor(eased * target);
+        entry.target.textContent = current.toLocaleString() + suffix;
+        if (progress < 1) requestAnimationFrame(updateCounter);
+      }
+      requestAnimationFrame(updateCounter);
+    }
+  });
+}, { threshold: 0.5 });
+dataValues.forEach(el => counterObserver.observe(el));
+
+// ═══════════ VISUALIZATION CANVASES ═══════════
+
+function initViz(canvasId, drawFn) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  let w, h;
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    w = canvas.width = rect.width * devicePixelRatio;
+    h = canvas.height = rect.height * devicePixelRatio;
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+    w /= devicePixelRatio;
+    h /= devicePixelRatio;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let t = 0;
+  function animate() {
+    t += 0.008;
+    ctx.clearRect(0, 0, w, h);
+    drawFn(ctx, w, h, t);
+    requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+// Viz 1: Accretion Disk Turbulence
+initViz('viz1', (ctx, w, h, t) => {
+  const cx = w / 2, cy = h / 2;
+  const bhR = Math.min(w, h) * 0.15;
+
+  // Black hole center
+  ctx.beginPath();
+  ctx.arc(cx, cy, bhR, 0, Math.PI * 2);
+  ctx.fillStyle = '#000';
+  ctx.fill();
+
+  // Accretion particles
+  for (let i = 0; i < 600; i++) {
+    const angle = (i / 600) * Math.PI * 2 + t * (0.5 + Math.random() * 0.3);
+    const dist = bhR + 15 + (i % 120) * 1.2 + Math.sin(t + i * 0.1) * 8;
+    const x = cx + Math.cos(angle) * dist;
+    const y = cy + Math.sin(angle) * dist * 0.4; // flattened perspective
+
+    const brightness = 0.3 + Math.sin(t * 2 + i * 0.2) * 0.2;
+    const size = 1 + Math.random() * 1.5;
+
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, size * 3);
+    gradient.addColorStop(0, `rgba(255,200,80,${brightness})`);
+    gradient.addColorStop(0.5, `rgba(255,120,0,${brightness * 0.5})`);
+    gradient.addColorStop(1, 'transparent');
+
+    ctx.beginPath();
+    ctx.arc(x, y, size * 3, 0, Math.PI * 2);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+  }
+
+  // Photon ring glow
+  const ringGrad = ctx.createRadialGradient(cx, cy, bhR, cx, cy, bhR + 8);
+  ringGrad.addColorStop(0, 'transparent');
+  ringGrad.addColorStop(0.5, 'rgba(255,180,80,0.4)');
+  ringGrad.addColorStop(1, 'transparent');
+  ctx.beginPath();
+  ctx.arc(cx, cy, bhR + 8, 0, Math.PI * 2);
+  ctx.strokeStyle = ringGrad;
+  ctx.lineWidth = 16;
+  ctx.stroke();
+});
+
+// Viz 2: Gravitational Lensing
+initViz('viz2', (ctx, w, h, t) => {
+  const cx = w / 2, cy = h / 2;
+  const bhR = Math.min(w, h) * 0.12;
+
+  // Background stars
+  for (let i = 0; i < 200; i++) {
+    const bx = (Math.sin(i * 127.1 + 311.7) * 0.5 + 0.5) * w;
+    const by = (Math.sin(i * 269.5 + 183.3) * 0.5 + 0.5) * h;
+    const dist = Math.hypot(bx - cx, by - cy);
+
+    // Gravitational deflection
+    const deflection = bhR * bhR / (dist + bhR);
+    const angle = Math.atan2(by - cy, bx - cx);
+    const nx = bx + Math.cos(angle) * deflection * 0.5;
+    const ny = by + Math.sin(angle) * deflection * 0.5;
+
+    // Hide stars behind event horizon
+    if (dist < bhR) continue;
+
+    const brightness = Math.min(1, 0.5 + deflection / 20);
+    const size = 1 + brightness;
+
+    ctx.beginPath();
+    ctx.arc(nx, ny, size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${brightness * 0.8})`;
+    ctx.fill();
+
+    // Einstein ring arcs
+    if (dist < bhR * 4) {
+      ctx.beginPath();
+      ctx.arc(nx, ny, size * 2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,180,80,${brightness * 0.15})`;
+      ctx.fill();
+    }
+  }
+
+  // Event horizon
+  const ehGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, bhR);
+  ehGrad.addColorStop(0, '#000');
+  ehGrad.addColorStop(0.85, '#000');
+  ehGrad.addColorStop(1, 'rgba(255,140,0,0.1)');
+  ctx.beginPath();
+  ctx.arc(cx, cy, bhR, 0, Math.PI * 2);
+  ctx.fillStyle = ehGrad;
+  ctx.fill();
+
+  // Einstein ring
+  ctx.beginPath();
+  ctx.arc(cx, cy, bhR * 2.6, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(255,200,100,0.15)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+});
+
+// Viz 3: Spaghettification
+initViz('viz3', (ctx, w, h, t) => {
+  const cx = w / 2, cy = h / 2;
+  const bhR = Math.min(w, h) * 0.15;
+
+  // Stars being stretched toward black hole
+  for (let i = 0; i < 80; i++) {
+    const angle = (i / 80) * Math.PI * 2 + t * 0.2;
+    const dist = bhR * 3 + (i % 30) * 15;
+
+    // Stretch factor based on proximity to BH
+    const stretchFactor = Math.max(1, bhR * 4 / (dist - bhR * 0.5));
+    const stretchAngle = angle + Math.sin(t + i * 0.3) * 0.3;
+
+    const x = cx + Math.cos(stretchAngle) * dist;
+    const y = cy + Math.sin(stretchAngle) * dist;
+
+    const prox = 1 - (dist - bhR) / (bhR * 5);
+    const warmth = Math.min(1, prox);
+
+    const len = 3 + stretchFactor * 4;
+    const dirX = Math.cos(stretchAngle);
+    const dirY = Math.sin(stretchAngle);
+
+    const grad = ctx.createLinearGradient(
+      x - dirX * len, y - dirY * len,
+      x + dirX * len, y + dirY * len
+    );
+    grad.addColorStop(0, `rgba(100,150,255,${0.2 * (1 - warmth)})`);
+    grad.addColorStop(1, `rgba(255,${150 + warmth * 100},${80 + warmth * 100},${0.6 + warmth * 0.4})`);
+
+    ctx.beginPath();
+    ctx.moveTo(x - dirX * len, y - dirY * len);
+    ctx.lineTo(x + dirX * len, y + dirY * len);
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+  // Black hole
+  const bhGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, bhR * 1.5);
+  bhGrad.addColorStop(0, '#000');
+  bhGrad.addColorStop(0.7, '#000');
+  bhGrad.addColorStop(1, 'rgba(255,100,0,0.15)');
+  ctx.beginPath();
+  ctx.arc(cx, cy, bhR * 1.5, 0, Math.PI * 2);
+  ctx.fillStyle = bhGrad;
+  ctx.fill();
+});
+
+// Viz 4: Hawking Radiation
+initViz('viz4', (ctx, w, h, t) => {
+  const cx = w / 2, cy = h / 2;
+  const bhR = Math.min(w, h) * 0.12;
+
+  // Event horizon with subtle glow
+  const ehGrad = ctx.createRadialGradient(cx, cy, bhR * 0.8, cx, cy, bhR * 1.3);
+  ehGrad.addColorStop(0, '#000');
+  ehGrad.addColorStop(0.8, '#000');
+  ehGrad.addColorStop(1, 'rgba(74,127,255,0.08)');
+  ctx.beginPath();
+  ctx.arc(cx, cy, bhR * 1.3, 0, Math.PI * 2);
+  ctx.fillStyle = ehGrad;
+  ctx.fill();
+
+  // Quantum fluctuation particles (Hawking radiation)
+  for (let i = 0; i < 120; i++) {
+    const angle = (i / 120) * Math.PI * 2 + Math.sin(t * 0.5 + i) * 0.5;
+    const emissionDelay = (i * 0.05 + t * 0.3) % 3;
+    const progress = emissionDelay / 3;
+
+    if (progress > 1) continue;
+
+    const dist = bhR + progress * Math.min(w, h) * 0.4;
+    const x = cx + Math.cos(angle) * dist;
+    const y = cy + Math.sin(angle) * dist;
+
+    const alpha = (1 - progress) * 0.7;
+    const size = (1 - progress * 0.7) * 2.5;
+
+    // Particle pair visualization — one escapes (bright), one falls in (dim)
+    const escaped = Math.sin(i * 73.1) > 0;
+
+    if (escaped) {
+      const hue = 200 + Math.sin(t + i) * 40;
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${hue}, 80%, 70%, ${alpha})`;
+      ctx.fill();
+
+      // Trail
+      const trailLen = 8 * (1 - progress);
+      const tx = x - Math.cos(angle) * trailLen;
+      const ty = y - Math.sin(angle) * trailLen;
+      ctx.beginPath();
+      ctx.moveTo(tx, ty);
+      ctx.lineTo(x, y);
+      ctx.strokeStyle = `hsla(${hue}, 80%, 70%, ${alpha * 0.4})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    } else {
+      // Falling in particle
+      const fallDist = bhR * (1 - progress * 0.9);
+      const fx = cx + Math.cos(angle) * fallDist;
+      const fy = cy + Math.sin(angle) * fallDist;
+      ctx.beginPath();
+      ctx.arc(fx, fy, size * 0.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(100,50,200,${alpha * 0.3})`;
+      ctx.fill();
+    }
+  }
+
+  // Horizon ring
+  ctx.beginPath();
+  ctx.arc(cx, cy, bhR, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(74,127,255,0.2)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+});
+</script>
+</body>
+</html>
